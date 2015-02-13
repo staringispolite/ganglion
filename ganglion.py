@@ -23,6 +23,8 @@ with open (args.i, "r") as myfile:
 print "Read %d beat timecodes from %s" % (len(beat_sig), args.i)
 print "timecodes:\n%r" % (beat_sig)
 
+# TODO: use a random sampling of them if specified
+
 # Process into segment lengths between beats
 last_beat = 0
 for timecode in beat_sig:
@@ -50,5 +52,9 @@ for duration in beat_sig_formatted:
   clip_number = clip_number + 1
 print "ffmpeg commands:\n%r" % (ffmpeg_commands)
 
+# TODO: Run ffmpeg commands to create the clip files
 
+# TODO: Combine clip files into one output video
+
+# TODO: Delete clip files
 
