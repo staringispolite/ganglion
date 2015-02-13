@@ -70,13 +70,14 @@ print "ffmpeg commands:\n%r" % (ffmpeg_commands)
 
 #  Run ffmpeg commands to create the clip files
 for cmd in ffmpeg_commands:
+  print "running command:\n%s" % (cmd)
   return_code = call(cmd)
 
 # Combine clip files into one output video
-return_code = 
+return_code = \
     call("for f in ./partial*_%s; do echo \"file '$f'\" >> mylist.txt; done" % (
         args.v))
-return_code =
+return_code = \
     call("ffmpeg -f concat -i mylist.txt -c copy output_%s" % (args.v))
 
 # Delete clip files
