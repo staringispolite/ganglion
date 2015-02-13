@@ -1,6 +1,7 @@
 import argparse
 from datetime import datetime
 import random
+from subprocess import call
 
 parser = argparse.ArgumentParser(description="processes audio time signatures to output a video with cuts that correspond to the times provided")
 parser.add_argument('-i', metavar='path_beat', required=True,
@@ -67,9 +68,21 @@ for duration in beat_sig_formatted:
   clip_number = clip_number + 1
 print "ffmpeg commands:\n%r" % (ffmpeg_commands)
 
-# TODO: Run ffmpeg commands to create the clip files
+#  Run ffmpeg commands to create the clip files
+for cmd in ffmpeg_commands:
+  return_code = call(cmd)
 
-# TODO: Combine clip files into one output video
+# Combine clip files into one output video
+return_code = 
+    call("for f in ./partial*_%s; do echo \"file '$f'\" >> mylist.txt; done" % (
+        args.v))
+return_code =
+    call("ffmpeg -f concat -i mylist.txt -c copy output_%s" % (args.v))
 
-# TODO: Delete clip files
+# Delete clip files
+clip_number = 0
+call("rm mylist.txt")
+for cmd in ffmpeg_commands:
+  call("rm partial%d_%s" % (clip_number, args.v))
+
 
