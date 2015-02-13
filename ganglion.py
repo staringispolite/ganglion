@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime
+import random
 
 parser = argparse.ArgumentParser(description="processes audio time signatures to output a video with cuts that correspond to the times provided")
 parser.add_argument('-i', metavar='path_beat', required=True,
@@ -16,6 +17,11 @@ beat_sig = []
 beat_durations = []
 beat_sig_formatted = []
 ffmpeg_commands = []
+sampling_rate = 100
+
+# Process input variables
+if args.s:
+  sampling_rate = int(args.s)
 
 # Read the beat signature in
 with open (args.i, "r") as myfile:
@@ -23,7 +29,16 @@ with open (args.i, "r") as myfile:
 print "Read %d beat timecodes from %s" % (len(beat_sig), args.i)
 print "timecodes:\n%r" % (beat_sig)
 
-# TODO: use a random sampling of them if specified
+# Use a random sampling of beats if specified
+beats_to_keep = []
+if (sampling_rate != 100):
+  for timecode in beat_sig:
+    dice_roll = random.random()*100
+    if (dice_roll < sampling_rate):
+      # Rate of 25 means 25/100 chance of using each
+      beats_to_keep.append(timecode)
+  beat_sig = beats_to_keep
+  print "Random sampling of ~%d%%:\n%r" % (sampling_rate, beat_sig)
 
 # Process into segment lengths between beats
 last_beat = 0
