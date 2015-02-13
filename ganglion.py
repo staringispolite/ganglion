@@ -63,7 +63,7 @@ clip_number = 0
 for duration in beat_sig_formatted:
   clip_filename = "partial%d_%s" % (clip_number, args.v)
   ffmpeg_commands.append(
-      "ffmpeg -ss %s -i %s -c:v copy -c:a copy -t %s %s" % (
+      "/usr/local/bin/ffmpeg -ss %s -i %s -c:v copy -c:a copy -t %s %s" % (
       "00:00:00", args.v, duration, clip_filename))
   clip_number = clip_number + 1
 print "ffmpeg commands:\n%r" % (ffmpeg_commands)
@@ -71,19 +71,20 @@ print "ffmpeg commands:\n%r" % (ffmpeg_commands)
 #  Run ffmpeg commands to create the clip files
 for cmd in ffmpeg_commands:
   print "running command:\n%s" % (cmd)
-  return_code = call(cmd)
+  return_code = call(cmd, shell=True)
 
 # Combine clip files into one output video
 return_code = \
     call("for f in ./partial*_%s; do echo \"file '$f'\" >> mylist.txt; done" % (
-        args.v))
+        args.v), shell=True)
 return_code = \
-    call("ffmpeg -f concat -i mylist.txt -c copy output_%s" % (args.v))
+    call("ffmpeg -f concat -i mylist.txt -c copy output_%s" % (args.v), shell=True)
 
 # Delete clip files
 clip_number = 0
-call("rm mylist.txt")
+call("rm mylist.txt", shell=True)
 for cmd in ffmpeg_commands:
-  call("rm partial%d_%s" % (clip_number, args.v))
+  call("rm partial%d_%s" % (clip_number, args.v), shell=True)
+  clip_number = clip_number + 1
 
 
