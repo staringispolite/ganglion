@@ -38,3 +38,17 @@ for duration in beat_durations:
   duration_formatted = "%s.%d" % (dt_str, milliseconds)
   beat_sig_formatted.append(duration_formatted)
 print "durations formatted:\n%r" % (beat_sig_formatted)
+
+# Create ffmpeg commands from those durations
+# TODO: How to pick starting point? Placeholder is 00:00:00
+clip_number = 0
+for duration in beat_sig_formatted:
+  clip_filename = "partial%d_%s" % (clip_number, args.v)
+  ffmpeg_commands.append(
+      "ffmpeg -ss %s -i %s -c:v copy -c:a copy -t %s %s" % (
+      "00:00:00", args.v, duration, clip_filename))
+  clip_number = clip_number + 1
+print "ffmpeg commands:\n%r" % (ffmpeg_commands)
+
+
+
